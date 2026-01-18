@@ -8,5 +8,6 @@
   "scripts": {
     "build": "npm run build -w netwrap",
     "test": "npm run test -w netwrap"
-  }
+  },
+  "packageManager": "yarn@1.22.22"
 }
