@@ -171,7 +171,13 @@ describe("useFetcher", () => {
   });
 
   it("tracks loading state", async () => {
-    const queryFn = jest.fn(async () => "ok");
+    let resolveQuery: (() => void) | null = null;
+    const queryFn = jest.fn(
+      () =>
+        new Promise<string>((resolve) => {
+          resolveQuery = () => resolve("ok");
+        })
+    );
     const ref = React.createRef<HookHandle>();
 
     act(() => {
@@ -184,6 +190,7 @@ describe("useFetcher", () => {
       const promise = ref.current?.trigger();
       await Promise.resolve();
       expect(ref.current?.getSnapshot().isLoading).toBe(true);
+      resolveQuery?.();
       await promise;
     });
 

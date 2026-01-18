@@ -10,7 +10,7 @@ module.exports = {
   moduleFileExtensions: ["ts", "tsx", "js", "jsx", "json", "node"],
   setupFilesAfterEnv: [
     "@testing-library/jest-dom/extend-expect",
-    "<rootDir>/__tests__/setupTests.ts",
+    "<rootDir>/test/setupTests.ts",
   ],
   // transform: {
   //   "^.+\\.(t|j)sx?$": "ts-jest",
