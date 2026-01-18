@@ -39,4 +39,7 @@ yarn-error.log*
 # typescript
 *.tsbuildinfo
 next-env.d.ts
+<<<<<<< HEAD
 node_modules
+=======
+>>>>>>> 6628ec7057084027da24d3f004188a6bd587233b
