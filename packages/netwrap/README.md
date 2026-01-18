@@ -32,6 +32,7 @@ pnpm add netwrap
 - `useFetcher` must be imported from `netwrap/client` and used only in client components.
 - Client-component usage of `fetcher` is deprecated and will be removed in the next version. Use `useFetcher` instead.
 - `fetcher` is not reactive; do not destructure `data` or `error` if you expect live updates.
+- `fetcher` cache is instance-local. Recreate the instance and the cache resets.
 
 ### useFetcher (React client component)
 
@@ -58,11 +59,11 @@ export default function ClientPage() {
   });
 
   return (
-    <div style={{ padding: 24, maxWidth: 640 }}>
+    <section>
       <h1>Client useFetcher test</h1>
       <p>Click to trigger a client-side fetch and watch state updates.</p>
 
-      <div style={{ display: "flex", gap: 12, margin: "16px 0" }}>
+      <div className="controls">
         <button onClick={() => trigger()} disabled={isLoading}>
           {isLoading ? "Loading..." : "Fetch data"}
         </button>
@@ -71,9 +72,9 @@ export default function ClientPage() {
         </button>
       </div>
 
-      <div style={{ marginTop: 12 }}>
+      <div className="status">
         <div>Status: {isLoading ? "loading" : "idle"}</div>
-        {error ? <div style={{ color: "crimson" }}>Error</div> : null}
+        {error ? <div className="error">Error</div> : null}
         {data ? (
           <div>
             Result: #{data.id} - {data.title}
@@ -83,7 +84,7 @@ export default function ClientPage() {
         )}
       </div>
 
-      <div style={{ marginTop: 16 }}>
+      <div className="events">
         <strong>Event log</strong>
         <ul>
           {log.slice(0, 6).map((item, idx) => (
@@ -91,7 +92,7 @@ export default function ClientPage() {
           ))}
         </ul>
       </div>
-    </div>
+    </section>
   );
 }
 ```
@@ -120,11 +121,11 @@ export default function ClientFetcherPage() {
   );
 
   return (
-    <div style={{ padding: 24, maxWidth: 640 }}>
+    <section>
       <h1>Client fetcher test</h1>
       <p>Using fetcher in a client component with a stable instance.</p>
 
-      <div style={{ display: "flex", gap: 12, margin: "16px 0" }}>
+      <div className="controls">
         <button onClick={() => api.trigger()} disabled={api.isLoading}>
           {api.isLoading ? "Loading..." : "Fetch data"}
         </button>
@@ -133,9 +134,9 @@ export default function ClientFetcherPage() {
         </button>
       </div>
 
-      <div style={{ marginTop: 12 }}>
+      <div className="status">
         <div>Status: {api.isLoading ? "loading" : "idle"}</div>
-        {api.error ? <div style={{ color: "crimson" }}>Error</div> : null}
+        {api.error ? <div className="error">Error</div> : null}
         {api.data ? (
           <div>
             Result: #{api.data.id} - {api.data.title}
@@ -145,7 +146,7 @@ export default function ClientFetcherPage() {
         )}
       </div>
 
-      <div style={{ marginTop: 16 }}>
+      <div className="events">
         <strong>Event log</strong>
         <ul>
           {log.slice(0, 6).map((item, idx) => (
@@ -153,7 +154,7 @@ export default function ClientFetcherPage() {
           ))}
         </ul>
       </div>
-    </div>
+    </section>
   );
 }
 ```
