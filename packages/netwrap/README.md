@@ -22,31 +22,37 @@ pnpm add netwrap
 
 ## Usage
 
+### Entry points
+
+- `netwrap`: server-safe utilities and `fetcher`
+- `netwrap/client`: React hooks (must be used in client components)
+
 ### fetcher (non-React)
 
 ```ts
 import { fetcher } from "netwrap";
 
-const { trigger, onLoadingChange, invalidateCache } = fetcher({
+const api = fetcher({
   queryFn: async () => {
     const res = await fetch("https://api.example.com/data");
     return res.json();
   },
 });
 
-onLoadingChange((isLoading) => {
+api.onLoadingChange((isLoading) => {
   console.log("Loading:", isLoading);
 });
 
-const result = await trigger();
+const result = await api.trigger();
 console.log(result.status, result.payload);
-invalidateCache();
+console.log("Latest data:", api.data);
+api.invalidateCache();
 ```
 
 ### useFetcher (React)
 
 ```tsx
-import { useFetcher } from "netwrap";
+import { useFetcher } from "netwrap/client";
 
 function Users() {
   const { trigger, data, error, isLoading, invalidateCache } = useFetcher<
@@ -83,8 +89,16 @@ Returns:
 - `trigger(triggerData?)`: executes the request
 - `data`: last response data (if successful)
 - `error`: last error (if any)
+- `isLoading`: loading state
+- `getData()`: get the latest data without subscribing
+- `getError()`: get the latest error without subscribing
+- `getIsLoading()`: get the latest loading state without subscribing
 - `onLoadingChange(listener)`: subscribe to loading state changes
+- `onDataChange(listener)`: subscribe to data changes
+- `onErrorChange(listener)`: subscribe to error changes
 - `invalidateCache()`: clears cached response data
+
+Note: `fetcher` is not reactive. Avoid destructuring `data` or `error` from it if you expect live updates; access them from the returned object (`api.data`) or use the change listeners.
 
 ### useFetcher(options)
 

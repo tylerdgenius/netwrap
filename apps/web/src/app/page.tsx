@@ -1,18 +1,21 @@
-"use client";
-
-import { useFetcher } from "netwrap";
+import { fetcher } from "netwrap";
 import styles from "./page.module.css";
 
-export default function Home() {
-  const { trigger, data, error, isLoading, invalidateCache } = useFetcher<
-    void,
-    { id: number; title: string }
-  >({
+export default async function Home() {
+  const api = fetcher<void, { id: number; title: string }>({
     queryFn: async () => {
       const res = await fetch("https://jsonplaceholder.typicode.com/todos/1");
       return res.json();
     },
   });
+
+  api.onDataChange((data) => {
+    console.log("Data changed:", data);
+  });
+
+  const data = await api.trigger();
+
+  console.log("Fetched data:", data);
 
   return (
     <div className={styles.page}>
@@ -21,24 +24,24 @@ export default function Home() {
         <div className={styles.ctas}>
           <button
             className={styles.primary}
-            onClick={() => trigger()}
-            disabled={isLoading}
+            // onClick={() => api.trigger()}
+            disabled={api.isLoading}
           >
-            {isLoading ? "Loading..." : "Fetch data"}
+            {api.isLoading ? "Loading..." : "Fetch data"}
           </button>
           <button
             className={styles.secondary}
-            onClick={() => invalidateCache()}
-            disabled={isLoading}
+            // onClick={() => api.invalidateCache()}
+            disabled={api.isLoading}
           >
             Clear cache
           </button>
         </div>
         <div className={styles.intro}>
-          {error && <p>Request failed.</p>}
-          {data && (
+          {api.error ? <p>Request failed.</p> : null}
+          {api.data && (
             <p>
-              #{data.id} - {data.title}
+              #{api.data.id} - {api.data.title}
             </p>
           )}
         </div>

@@ -1,6 +1,7 @@
 import React, { forwardRef, useImperativeHandle, act } from "react";
 import { createRoot, Root } from "react-dom/client";
-import { fetcher, useFetcher } from "../src";
+import { fetcher } from "../src";
+import { useFetcher } from "../src/client";
 import type { useFetcherProps } from "../src/types";
 
 type HookHandle = {

@@ -4,6 +4,16 @@
   "description": "A package wrapper for helping teams around the world deliver consistent results when building react applications that connect to backend services. This package inspiration came from working in teams where frontend users could not achieve consistent results when integrating with APIs.",
   "main": "dist/index.js",
   "types": "dist/index.d.ts",
+  "exports": {
+    ".": {
+      "types": "./dist/index.d.ts",
+      "default": "./dist/index.js"
+    },
+    "./client": {
+      "types": "./dist/client.d.ts",
+      "default": "./dist/client.js"
+    }
+  },
   "files": [
     "dist"
   ],

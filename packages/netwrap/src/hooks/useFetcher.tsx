@@ -1,3 +1,5 @@
+"use client";
+
 import FetcherCore from "../lib/fetcherCore";
 import { useFetcherProps } from "../types";
 

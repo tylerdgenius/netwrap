@@ -48,6 +48,14 @@ class FetcherCore<
     },
   ) {
     this.responseHandler = options?.responseHandler ?? utils.responseHandler;
+    this.onLoadingChange = this.onLoadingChange.bind(this);
+    this.offLoadingChange = this.offLoadingChange.bind(this);
+    this.onDataChange = this.onDataChange.bind(this);
+    this.offDataChange = this.offDataChange.bind(this);
+    this.onErrorChange = this.onErrorChange.bind(this);
+    this.offErrorChange = this.offErrorChange.bind(this);
+    this.invalidateCache = this.invalidateCache.bind(this);
+    this.trigger = this.trigger.bind(this);
   }
 
   updateProps(
