@@ -7,6 +7,14 @@ const client = fetcher({
   },
 });
 
+client.onDataChange((data) => {
+  console.log("Data changed:", data);
+});
+
+client.onLoadingChange((isLoading) => {
+  console.log("Loading state changed:", isLoading);
+});
+
 client.trigger().then((result) => {
   console.log("API test result:", result);
 });
