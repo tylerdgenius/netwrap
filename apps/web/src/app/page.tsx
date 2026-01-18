@@ -17,9 +17,7 @@ export default async function Home() {
     console.log("Data changed:", data);
   });
 
-  const data = await api.trigger();
-
-  console.log("Fetched data:", data);
+  await api.trigger();
 
   return (
     <div className={styles.page}>
