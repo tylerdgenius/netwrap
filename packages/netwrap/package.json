@@ -1,6 +1,6 @@
 {
   "name": "netwrap",
-  "version": "3.1.0",
+  "version": "4.0.0",
   "description": "A package wrapper for helping teams around the world deliver consistent results when building react applications that connect to backend services. This package inspiration came from working in teams where frontend users could not achieve consistent results when integrating with APIs.",
   "main": "dist-cjs/index.js",
   "types": "dist/index.d.ts",
@@ -24,7 +24,7 @@
   },
   "scripts": {
     "test": "jest --config jest.config.js",
-    "deploy": "npm run build && npm publish",
+    "deploy": "yarn build && yarn publish",
     "build": "tsc -p tsconfig.build.json && tsc -p tsconfig.build.cjs.json",
     "prepare": "npm run build"
   },

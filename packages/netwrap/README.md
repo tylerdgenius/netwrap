@@ -22,6 +22,9 @@ yarn workspace netwrap build
 # run netwrap tests
 yarn workspace netwrap test
 
+# deploy netwrap (builds then publishes)
+yarn workspace netwrap deploy
+
 # run the Next.js web app
 yarn workspace web dev
 

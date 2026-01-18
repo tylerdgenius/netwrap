@@ -33,6 +33,12 @@ node apps/api/index.js
 yarn workspace MobileApp start
 ```
 
+## Deployment
+
+```bash
+yarn workspace netwrap deploy
+```
+
 ## Package docs
 
 See `packages/netwrap/README.md`.
