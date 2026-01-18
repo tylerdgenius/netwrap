@@ -7,6 +7,6 @@
     "start": "node index.js"
   },
   "dependencies": {
-    "netwrap": "workspace:*"
+    "netwrap": "3.1.0"
   }
 }

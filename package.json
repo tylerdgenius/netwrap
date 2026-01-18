@@ -1,10 +1,16 @@
 {
   "name": "netwrap-workspace",
   "private": true,
-  "workspaces": [
-    "packages/*",
-    "apps/*"
-  ],
+  "workspaces": {
+    "packages": [
+      "packages/*",
+      "apps/*"
+    ],
+    "nohoist": [
+      "**/netwrap",
+      "**/netwrap/**"
+    ]
+  },
   "scripts": {
     "build": "npm run build -w netwrap",
     "test": "npm run test -w netwrap"
