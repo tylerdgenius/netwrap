@@ -1,0 +1,51 @@
+{
+  "name": "netwrap",
+  "version": "3.1.0",
+  "description": "A package wrapper for helping teams around the world deliver consistent results when building react applications that connect to backend services. This package inspiration came from working in teams where frontend users could not achieve consistent results when integrating with APIs.",
+  "main": "dist/index.js",
+  "types": "dist/index.d.ts",
+  "files": [
+    "dist"
+  ],
+  "scripts": {
+    "test": "jest --config jest.config.js",
+    "deploy": "npm run build && npm publish",
+    "build": "tsc -p tsconfig.build.json",
+    "prepare": "npm run build"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+ssh://git@github.com/tylerdgenius/netwrap.git"
+  },
+  "keywords": [
+    "netwrap",
+    "wrap",
+    "net",
+    "wrapnet",
+    "netwrapper",
+    "fetcher",
+    "useFetcher"
+  ],
+  "author": "tylerdgenius",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/tylerdgenius/netwrap/issues"
+  },
+  "homepage": "https://github.com/tylerdgenius/netwrap#readme",
+  "peerDependencies": {
+    "react": "*",
+    "react-dom": "*"
+  },
+  "devDependencies": {
+    "@testing-library/jest-dom": "^5.17.0",
+    "@types/jest": "^29.5.3",
+    "@types/react": "^19.0.0",
+    "@types/react-dom": "^19.0.0",
+    "jest": "^29.6.1",
+    "jest-environment-jsdom": "^29.6.1",
+    "ts-jest": "^29.1.1",
+    "ts-node": "^10.9.1",
+    "typescript": "^4.1.6",
+    "axios": "1.13.2"
+  }
+}
