@@ -12,25 +12,25 @@ Monorepo for the `netwrap` package and test apps.
 ## Quick start
 
 ```bash
-npm install
+yarn install
 ```
 
 ```bash
-npm run build -w netwrap
+yarn workspace netwrap build
 ```
 
 ## App commands
 
 ```bash
-npm run dev -w web
+yarn workspace web dev
 ```
 
 ```bash
-npm run start -w netwrap-api
+node apps/api/index.js
 ```
 
 ```bash
-npm run start -w MobileApp
+yarn workspace MobileApp start
 ```
 
 ## Package docs
