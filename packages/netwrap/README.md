@@ -25,57 +25,134 @@ pnpm add netwrap
 ### Entry points
 
 - `netwrap`: server-safe utilities and `fetcher`
-- `netwrap/client`: React hooks (must be used in client components)
+- `netwrap/client`: React hooks (client components only)
 
-### fetcher (non-React)
+### Warnings and deprecations
 
-```ts
-import { fetcher } from "netwrap";
+- `useFetcher` must be imported from `netwrap/client` and used only in client components.
+- Client-component usage of `fetcher` is deprecated and will be removed in the next version. Use `useFetcher` instead.
+- `fetcher` is not reactive; do not destructure `data` or `error` if you expect live updates.
 
-const api = fetcher({
-  queryFn: async () => {
-    const res = await fetch("https://api.example.com/data");
-    return res.json();
-  },
-});
-
-api.onLoadingChange((isLoading) => {
-  console.log("Loading:", isLoading);
-});
-
-const result = await api.trigger();
-console.log(result.status, result.payload);
-console.log("Latest data:", api.data);
-api.invalidateCache();
-```
-
-### useFetcher (React)
+### useFetcher (React client component)
 
 ```tsx
-import { useFetcher } from "netwrap/client";
+"use client";
 
-function Users() {
+import { useFetcher } from "netwrap/client";
+import { useState } from "react";
+
+export default function ClientPage() {
+  const [log, setLog] = useState<string[]>([]);
   const { trigger, data, error, isLoading, invalidateCache } = useFetcher<
     void,
-    { id: number; name: string }[],
-    { message: string }
+    { id: number; title: string }
   >({
     queryFn: async () => {
-      const res = await fetch("/api/users");
+      const res = await fetch("https://jsonplaceholder.typicode.com/todos/1");
       return res.json();
     },
+    onStartQuery: () => setLog((prev) => ["start", ...prev]),
+    onSuccess: () => setLog((prev) => ["success", ...prev]),
+    onError: () => setLog((prev) => ["error", ...prev]),
+    onFinal: () => setLog((prev) => ["final", ...prev]),
   });
 
   return (
-    <div>
-      <button onClick={() => trigger()} disabled={isLoading}>
-        Load
-      </button>
-      <button onClick={() => invalidateCache()} disabled={isLoading}>
-        Clear cache
-      </button>
-      {error && <p>Failed</p>}
-      {data && data.map((u) => <div key={u.id}>{u.name}</div>)}
+    <div style={{ padding: 24, maxWidth: 640 }}>
+      <h1>Client useFetcher test</h1>
+      <p>Click to trigger a client-side fetch and watch state updates.</p>
+
+      <div style={{ display: "flex", gap: 12, margin: "16px 0" }}>
+        <button onClick={() => trigger()} disabled={isLoading}>
+          {isLoading ? "Loading..." : "Fetch data"}
+        </button>
+        <button onClick={() => invalidateCache()} disabled={isLoading}>
+          Clear cache
+        </button>
+      </div>
+
+      <div style={{ marginTop: 12 }}>
+        <div>Status: {isLoading ? "loading" : "idle"}</div>
+        {error ? <div style={{ color: "crimson" }}>Error</div> : null}
+        {data ? (
+          <div>
+            Result: #{data.id} - {data.title}
+          </div>
+        ) : (
+          <div>No data yet</div>
+        )}
+      </div>
+
+      <div style={{ marginTop: 16 }}>
+        <strong>Event log</strong>
+        <ul>
+          {log.slice(0, 6).map((item, idx) => (
+            <li key={`${item}-${idx}`}>{item}</li>
+          ))}
+        </ul>
+      </div>
+    </div>
+  );
+}
+```
+
+### fetcher (client component, deprecated)
+
+```tsx
+"use client";
+
+import { fetcher } from "netwrap";
+import { useState } from "react";
+
+export default function ClientFetcherPage() {
+  const [log, setLog] = useState<string[]>([]);
+  const [api] = useState(() =>
+    fetcher<void, { id: number; title: string }>({
+      queryFn: async () => {
+        const res = await fetch("https://jsonplaceholder.typicode.com/todos/1");
+        return res.json();
+      },
+      onStartQuery: () => setLog((prev) => ["start", ...prev]),
+      onSuccess: () => setLog((prev) => ["success", ...prev]),
+      onError: () => setLog((prev) => ["error", ...prev]),
+      onFinal: () => setLog((prev) => ["final", ...prev]),
+    }),
+  );
+
+  return (
+    <div style={{ padding: 24, maxWidth: 640 }}>
+      <h1>Client fetcher test</h1>
+      <p>Using fetcher in a client component with a stable instance.</p>
+
+      <div style={{ display: "flex", gap: 12, margin: "16px 0" }}>
+        <button onClick={() => api.trigger()} disabled={api.isLoading}>
+          {api.isLoading ? "Loading..." : "Fetch data"}
+        </button>
+        <button onClick={() => api.invalidateCache()} disabled={api.isLoading}>
+          Clear cache
+        </button>
+      </div>
+
+      <div style={{ marginTop: 12 }}>
+        <div>Status: {api.isLoading ? "loading" : "idle"}</div>
+        {api.error ? <div style={{ color: "crimson" }}>Error</div> : null}
+        {api.data ? (
+          <div>
+            Result: #{api.data.id} - {api.data.title}
+          </div>
+        ) : (
+          <div>No data yet</div>
+        )}
+      </div>
+
+      <div style={{ marginTop: 16 }}>
+        <strong>Event log</strong>
+        <ul>
+          {log.slice(0, 6).map((item, idx) => (
+            <li key={`${item}-${idx}`}>{item}</li>
+          ))}
+        </ul>
+      </div>
     </div>
   );
 }
