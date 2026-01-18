@@ -5,15 +5,32 @@ Lightweight request helpers with a React hook and a plain fetcher.
 ## Installation
 
 ```bash
-npm install netwrap
-```
-
-```bash
 yarn add netwrap
 ```
 
+## Development commands
+
+From the repo root:
+
 ```bash
-pnpm add netwrap
+# install workspace deps
+yarn install
+
+# build the netwrap package (ESM + CJS)
+yarn workspace netwrap build
+
+# run netwrap tests
+yarn workspace netwrap test
+
+# run the Next.js web app
+yarn workspace web dev
+
+# build and start the Next.js web app
+yarn workspace web build
+yarn workspace web start
+
+# run the API demo script
+node apps/api/index.js
 ```
 
 ## Peer Dependencies
@@ -246,8 +263,8 @@ await trigger(); // fetches again
 ## Contributing
 
 1. Fork and clone the repo.
-2. Install dependencies with `npm install`.
-3. Run tests with `npm test`.
+2. Install dependencies with `yarn install`.
+3. Run tests with `yarn workspace netwrap test`.
 4. Open a PR with a clear description of the change.
 
 ## License
