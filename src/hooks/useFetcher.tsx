@@ -1,6 +1,6 @@
 import { useFetcherProps } from "../types";
 
-import { useState } from "react";
+import { useRef, useState } from "react";
 
 const useFetcher = <
   RequestType = any,
@@ -15,7 +15,27 @@ const useFetcher = <
 
   const [isLoading, setIsLoading] = useState(false);
 
+  const cacheRef = useRef<{
+    hasCache: boolean;
+    data: ResponsePayloadType | null;
+  }>({ hasCache: false, data: null });
+
+  const invalidateCache = () => {
+    cacheRef.current = { hasCache: false, data: null };
+    setData(null);
+  };
+
   const trigger = async (triggerData?: RequestType) => {
+    if (cacheRef.current.hasCache) {
+      const cachedData = cacheRef.current.data;
+      setData(cachedData);
+      return {
+        status: true,
+        message: "Returned cached response",
+        payload: cachedData,
+      };
+    }
+
     setIsLoading(true);
     props?.onStartQuery?.();
     try {
@@ -24,6 +44,7 @@ const useFetcher = <
       props?.onSuccess?.(data as ResponsePayloadType);
 
       setData(data as ResponsePayloadType);
+      cacheRef.current = { hasCache: true, data: data as ResponsePayloadType };
 
       return {
         status: true,
@@ -49,6 +70,7 @@ const useFetcher = <
     data: mainData,
     error: mainError,
     isLoading,
+    invalidateCache,
   };
 };
 
