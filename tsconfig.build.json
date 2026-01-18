@@ -6,6 +6,6 @@
     "declarationMap": true,
     "emitDeclarationOnly": false,
     "outDir": "dist",
-    "rootDir": "."
+    "rootDir": "src"
   }
 }

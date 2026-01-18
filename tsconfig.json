@@ -15,6 +15,13 @@
     "forceConsistentCasingInFileNames": true,
     "baseUrl": "."
   },
-  "include": ["src/**/*"],
+  "include": [
+    "src/**/*",
+    "src/hooks",
+    "src/lib",
+    "src/utils",
+    "src/index.ts",
+    "src/types.ts"
+  ],
   "exclude": ["node_modules"]
 }

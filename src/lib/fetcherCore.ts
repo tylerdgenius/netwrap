@@ -1,5 +1,5 @@
-import { HandlerProps, ResponseHandler, useFetcherProps } from "../types";
 import utils from "../utils";
+import { HandlerProps, ResponseHandler, useFetcherProps } from "../types";
 
 class EventEmitter {
   private events: { [key: string]: Function[] } = {};
@@ -27,7 +27,7 @@ class EventEmitter {
 class FetcherCore<
   RequestType = any,
   ResponsePayloadType = any,
-  ErrorResponseType = unknown
+  ErrorResponseType = unknown,
 > {
   private mainData: ResponsePayloadType | null = null;
   private mainError: ErrorResponseType | unknown = null;
@@ -45,14 +45,17 @@ class FetcherCore<
     private options?: {
       logger?: typeof utils.logger;
       responseHandler?: ResponseHandler;
-    }
+    },
   ) {
-    this.responseHandler =
-      options?.responseHandler ?? utils.responseHandler;
+    this.responseHandler = options?.responseHandler ?? utils.responseHandler;
   }
 
   updateProps(
-    nextProps: useFetcherProps<RequestType, ResponsePayloadType, ErrorResponseType>
+    nextProps: useFetcherProps<
+      RequestType,
+      ResponsePayloadType,
+      ErrorResponseType
+    >,
   ) {
     this.props = nextProps;
   }

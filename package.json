@@ -1,6 +1,6 @@
 {
   "name": "netwrap",
-  "version": "3.0.6",
+  "version": "3.1.0",
   "description": "A package wrapper for helping teams around the world deliver consistent results when building react applications that connect to backend services. This package inspiration came from working in teams where frontend users could not achieve consistent results when integrating with APIs.",
   "main": "dist/index.js",
   "types": "dist/index.d.ts",
@@ -10,7 +10,7 @@
   "scripts": {
     "test": "jest --config jest.config.js",
     "deploy": "npm run build && npm publish",
-    "build": "tsc",
+    "build": "tsc -p tsconfig.build.json",
     "prepare": "npm run build"
   },
   "repository": {
@@ -22,7 +22,9 @@
     "wrap",
     "net",
     "wrapnet",
-    "netwrapper"
+    "netwrapper",
+    "fetcher",
+    "useFetcher"
   ],
   "author": "tylerdgenius",
   "license": "ISC",

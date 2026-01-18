@@ -1,18 +1,19 @@
-import { useFetcherProps } from "../types";
 import FetcherCore from "../lib/fetcherCore";
+import { useFetcherProps } from "../types";
 
 import { useEffect, useRef, useState } from "react";
 
 const useFetcher = <
   RequestType = any,
   ResponsePayloadType = any,
-  ErrorResponseType = unknown
+  ErrorResponseType = unknown,
 >(
-  props: useFetcherProps<RequestType, ResponsePayloadType, ErrorResponseType>
+  props: useFetcherProps<RequestType, ResponsePayloadType, ErrorResponseType>,
 ) => {
-  const instanceRef = useRef<
-    FetcherCore<RequestType, ResponsePayloadType, ErrorResponseType>
-  >(null);
+  const instanceRef =
+    useRef<FetcherCore<RequestType, ResponsePayloadType, ErrorResponseType>>(
+      null,
+    );
 
   if (!instanceRef.current) {
     instanceRef.current = new FetcherCore(props);
@@ -21,10 +22,10 @@ const useFetcher = <
   const instance = instanceRef.current;
 
   const [mainData, setData] = useState<ResponsePayloadType | null>(
-    instance.data
+    instance.data,
   );
   const [mainError, setError] = useState<ErrorResponseType | unknown>(
-    instance.error
+    instance.error,
   );
   const [isLoading, setIsLoading] = useState(instance.loading);
 
