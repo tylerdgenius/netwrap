@@ -1,6 +1,7 @@
 import { useFetcherProps } from "../types";
+import FetcherCore from "../lib/fetcherCore";
 
-import { useRef, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 
 const useFetcher = <
   RequestType = any,
@@ -9,68 +10,50 @@ const useFetcher = <
 >(
   props: useFetcherProps<RequestType, ResponsePayloadType, ErrorResponseType>
 ) => {
-  const [mainData, setData] = useState<ResponsePayloadType | null>(null);
+  const instanceRef = useRef<
+    FetcherCore<RequestType, ResponsePayloadType, ErrorResponseType>
+  >(null);
 
-  const [mainError, setError] = useState<ErrorResponseType | unknown>(null);
+  if (!instanceRef.current) {
+    instanceRef.current = new FetcherCore(props);
+  }
 
-  const [isLoading, setIsLoading] = useState(false);
+  const instance = instanceRef.current;
 
-  const cacheRef = useRef<{
-    hasCache: boolean;
-    data: ResponsePayloadType | null;
-  }>({ hasCache: false, data: null });
+  const [mainData, setData] = useState<ResponsePayloadType | null>(
+    instance.data
+  );
+  const [mainError, setError] = useState<ErrorResponseType | unknown>(
+    instance.error
+  );
+  const [isLoading, setIsLoading] = useState(instance.loading);
 
-  const invalidateCache = () => {
-    cacheRef.current = { hasCache: false, data: null };
-    setData(null);
-  };
+  useEffect(() => {
+    instance.updateProps(props);
+  }, [instance, props]);
 
-  const trigger = async (triggerData?: RequestType) => {
-    if (cacheRef.current.hasCache) {
-      const cachedData = cacheRef.current.data;
-      setData(cachedData);
-      return {
-        status: true,
-        message: "Returned cached response",
-        payload: cachedData,
-      };
-    }
+  useEffect(() => {
+    const handleLoading = (loading: boolean) => setIsLoading(loading);
+    const handleData = (data: ResponsePayloadType | null) => setData(data);
+    const handleError = (error: ErrorResponseType | unknown) => setError(error);
 
-    setIsLoading(true);
-    props?.onStartQuery?.();
-    try {
-      const data = await props.queryFn(triggerData);
+    instance.onLoadingChange(handleLoading);
+    instance.onDataChange(handleData);
+    instance.onErrorChange(handleError);
 
-      props?.onSuccess?.(data as ResponsePayloadType);
-
-      setData(data as ResponsePayloadType);
-      cacheRef.current = { hasCache: true, data: data as ResponsePayloadType };
-
-      return {
-        status: true,
-        message: "Successfully made request",
-        payload: data,
-      };
-    } catch (error: unknown) {
-      props?.onError?.(error as ErrorResponseType);
-      setError(error);
-      return {
-        status: false,
-        message: "Unable to make request",
-        payload: null,
-      };
-    } finally {
-      props?.onFinal?.();
-      setIsLoading(false);
-    }
-  };
+    return () => {
+      instance.offLoadingChange(handleLoading);
+      instance.offDataChange(handleData);
+      instance.offErrorChange(handleError);
+    };
+  }, [instance]);
 
   return {
-    trigger,
+    trigger: instance.trigger.bind(instance),
     data: mainData,
     error: mainError,
     isLoading,
-    invalidateCache,
+    invalidateCache: instance.invalidateCache.bind(instance),
   };
 };
 

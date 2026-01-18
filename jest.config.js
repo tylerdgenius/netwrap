@@ -8,7 +8,10 @@ module.exports = {
     // Add any custom module mappings if needed
   },
   moduleFileExtensions: ["ts", "tsx", "js", "jsx", "json", "node"],
-  setupFilesAfterEnv: ["@testing-library/jest-dom/extend-expect"],
+  setupFilesAfterEnv: [
+    "@testing-library/jest-dom/extend-expect",
+    "<rootDir>/__tests__/setupTests.ts",
+  ],
   // transform: {
   //   "^.+\\.(t|j)sx?$": "ts-jest",
   // },

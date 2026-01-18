@@ -27,7 +27,7 @@ pnpm add netwrap
 ```ts
 import { fetcher } from "netwrap";
 
-const { trigger, onLoadingChange } = fetcher({
+const { trigger, onLoadingChange, invalidateCache } = fetcher({
   queryFn: async () => {
     const res = await fetch("https://api.example.com/data");
     return res.json();
@@ -40,6 +40,7 @@ onLoadingChange((isLoading) => {
 
 const result = await trigger();
 console.log(result.status, result.payload);
+invalidateCache();
 ```
 
 ### useFetcher (React)
@@ -83,6 +84,7 @@ Returns:
 - `data`: last response data (if successful)
 - `error`: last error (if any)
 - `onLoadingChange(listener)`: subscribe to loading state changes
+- `invalidateCache()`: clears cached response data
 
 ### useFetcher(options)
 
@@ -97,7 +99,7 @@ Returns:
 
 Both `fetcher` and `useFetcher` accept:
 - `queryFn` (required): async function that performs the request
-- `onStartQuery`: called before the request begins
+- `onStartQuery`: called before the request begins; return a value to override `trigger` data (sync or async)
 - `onSuccess`: called with the response data
 - `onError`: called with the error
 - `onFinal`: called when the request completes (success or error)

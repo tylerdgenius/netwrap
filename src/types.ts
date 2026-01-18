@@ -7,7 +7,7 @@ export type HandlerProps = {
 export type ResponseHandler = (data: HandlerProps) => HandlerProps;
 
 export type useFetcherProps<T, K, P> = {
-  onStartQuery?: () => void;
+  onStartQuery?: (requestData?: T) => void | T | Promise<void | T>;
   onSuccess?: (data: K) => void;
   onError?: (error: P) => void;
   onFinal?: () => void;
