@@ -119,6 +119,22 @@ const { trigger } = fetcher({
 await trigger(123);
 ```
 
+### Cache behavior (fetcher)
+
+```ts
+const { trigger, invalidateCache } = fetcher({
+  queryFn: async () => {
+    const res = await fetch("/api/value");
+    return res.json();
+  },
+});
+
+await trigger(); // fetches
+await trigger(); // returns cached response
+invalidateCache();
+await trigger(); // fetches again
+```
+
 ### Cache behavior (useFetcher)
 
 ```ts
