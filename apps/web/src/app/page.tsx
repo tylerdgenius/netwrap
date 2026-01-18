@@ -9,6 +9,10 @@ export default async function Home() {
     },
   });
 
+  api.onLoadingChange((data) => {
+    console.log("Loading changed:", data);
+  })
+
   api.onDataChange((data) => {
     console.log("Data changed:", data);
   });
