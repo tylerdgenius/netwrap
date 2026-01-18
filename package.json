@@ -1,0 +1,13 @@
+{
+  "name": "netwrap-workspace",
+  "private": true,
+  "workspaces": [
+    "packages/*",
+    "apps/*"
+  ],
+  "scripts": {
+    "build": "npm run build -w netwrap",
+    "test": "npm run test -w netwrap"
+  },
+  "packageManager": "yarn@1.22.22"
+}
