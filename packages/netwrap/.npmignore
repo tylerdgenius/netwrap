@@ -2,3 +2,10 @@ src
 scripts
 tsconfig.json
 __tests__
+test
+jest.config.js
+.gitignore
+.vscode
+tsconfig.build.json
+README.md
+tsconfig.build.cjs.json
