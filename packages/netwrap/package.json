@@ -24,7 +24,7 @@
   },
   "scripts": {
     "test": "jest --config jest.config.js",
-    "deploy": "yarn build && yarn publish",
+    "deploy": "yarn build && npm publish --registry https://registry.npmjs.org",
     "build": "tsc -p tsconfig.build.json && tsc -p tsconfig.build.cjs.json",
     "prepare": "npm run build"
   },
